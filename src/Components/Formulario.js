@@ -1,7 +1,7 @@
 // Formulario.js
 import React, { useState } from "react";
 import ConfirmarProduto from "./ConfirmarProduto";
-import PopUpMessage from './PopUpMessage';
+
 
 export default function Formulario() {
     const [showModal, setShowModal] = useState(false);
@@ -24,7 +24,6 @@ export default function Formulario() {
 
     const handleCancelar = () => {
         handleCloseModal();
-        // Coloque outras ações que você quer executar quando o usuário cancelar aqui
     };
 
     return (

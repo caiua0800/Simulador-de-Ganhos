@@ -11,7 +11,7 @@ function Simulacao() {
     const [capacidade, setCapacidade] = useState('');
     const [VolumeCaminhao, setVolumeCaminhao] = useState('');
     const [Frete, setFrete] = useState('');
-    const [maximoLucroUni, setMaximoLucroUni] = useState(150);
+    const [maximoLucroUni, setMaximoLucroUni] = useState(200);
     const [combinations, setCombinations] = useState([]);
     const [combinacaoUnica, setcombinacaoUnica] = useState([]);
 
@@ -41,14 +41,14 @@ function Simulacao() {
             peso: parseFloat(p.Peso),
             volume: parseFloat(p.m3)
         }));
-    
+
 
         let combsUnicas = []
         info_products.forEach(produto => {
             let qtde = parseInt(parseInt(VolumeCaminhao) / produto.volume);
-            let peso_atual = 0;
-        
-            if ((qtde * produto.peso) < parseInt(VolumeCaminhao) * parseInt(capacidade)) {
+
+            if ((qtde * produto.peso) < (parseInt(VolumeCaminhao) * parseInt(capacidade))) {
+
                 let comb = {
                     nome: produto.nome,
                     qtde: qtde,
@@ -64,8 +64,56 @@ function Simulacao() {
 
 
                 let lucroEmCima = (comb.vendaUnitario / comb.custoUnitario)*100
-                if(lucroEmCima < parseInt(maximoLucroUni))
+
+                if(lucroEmCima < parseInt(maximoLucroUni)){
                     combsUnicas.push(comb)
+                }else{
+
+                    qtde = parseInt(qtde/2);
+                    
+                    let comb = {
+                        nome: produto.nome,
+                        qtde: qtde,
+                        peso: parseInt((qtde * parseFloat(produto.peso)).toFixed(2)),
+                        peso_unitario: produto.peso,
+                        volume_unitario: parseFloat(produto.volume.toFixed(2)),
+                        volume: parseFloat((produto.volume * qtde).toFixed(4)),
+                        custoUnitario: produto.custo,
+                        vendaUnitario: parseFloat(((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo) + produto.custo).toFixed(2)),
+                        lucroUnitario: parseFloat((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo).toFixed(2)),
+                        lucroTotal: parseFloat(((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo) * qtde).toFixed(2)),
+                    };
+                    combsUnicas.push(comb)
+                    
+                }
+            }else{
+                console.log(produto, qtde)
+
+                while((qtde * produto.peso) > (parseInt(VolumeCaminhao) * parseInt(capacidade))){
+                    qtde--;
+                }
+
+                console.log(produto, qtde)
+
+
+                // console.log(qtde)
+                let comb = {
+                    nome: produto.nome,
+                    qtde: qtde,
+                    peso: parseInt((qtde * parseFloat(produto.peso)).toFixed(2)),
+                    peso_unitario: produto.peso,
+                    volume_unitario: parseFloat(produto.volume.toFixed(2)),
+                    volume: parseFloat((produto.volume * qtde).toFixed(4)),
+                    custoUnitario: produto.custo,
+                    vendaUnitario: parseFloat(((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo) + produto.custo).toFixed(2)),
+                    lucroUnitario: parseFloat((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo).toFixed(2)),
+                    lucroTotal: parseFloat(((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo) * qtde).toFixed(2)),
+                };
+                let lucroEmCima = (comb.vendaUnitario / comb.custoUnitario)*100
+
+                if(lucroEmCima < parseInt(maximoLucroUni)){
+                    combsUnicas.push(comb)
+                }
             }
         });
 
