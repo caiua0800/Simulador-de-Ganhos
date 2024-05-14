@@ -50,17 +50,17 @@ export default function Formulario() {
 
             <div className="form-inputs">
                 <label>Largura da Caixa</label>
-                <input type="number" className="input" placeholder="cm" value={Largura} onChange={(e) => setLargura(e.target.value)} />
+                <input type="number" className="input" placeholder="Metros" value={Largura} onChange={(e) => setLargura(e.target.value)} />
             </div>
 
             <div className="form-inputs">
                 <label>Comprimento da Caixa</label>
-                <input type="number" className="input" placeholder="cm" value={Comprimento} onChange={(e) => setComprimento(e.target.value)} />
+                <input type="number" className="input" placeholder="Metros" value={Comprimento} onChange={(e) => setComprimento(e.target.value)} />
             </div>
 
             <div className="form-inputs">
                 <label>Altura da Caixa</label>
-                <input type="number" className="input" placeholder="cm" value={Altura} onChange={(e) => setAltura(e.target.value)} />
+                <input type="number" className="input" placeholder="Metros" value={Altura} onChange={(e) => setAltura(e.target.value)} />
             </div>
 
             <div className="form-inputs">
