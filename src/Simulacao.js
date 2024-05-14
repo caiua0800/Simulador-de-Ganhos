@@ -47,7 +47,7 @@ function Simulacao() {
         info_products.forEach(produto => {
             let qtde = parseInt(parseInt(VolumeCaminhao) / produto.volume);
 
-            if ((qtde * produto.peso) < (parseInt(VolumeCaminhao) * parseInt(capacidade))) {
+            if ((qtde * produto.peso) < (parseInt(VolumeCaminhao) * parseInt(capacidade)) && (qtde * produto.volume) > (parseInt(VolumeCaminhao) * 0.8)) {
 
                 let comb = {
                     nome: produto.nome,
@@ -236,7 +236,7 @@ function Simulacao() {
                 <h3>Capacidade de peso por metros cubicos</h3>
                 <input 
                     type='number' 
-                    placeholder='Informe o peso máximo'
+                    placeholder='Informe o peso máximo por metro cubico'
                     value={capacidade}
                     onChange={(e) => setCapacidade(e.target.value)} 
                 />
@@ -250,7 +250,7 @@ function Simulacao() {
                 <h3>Frete</h3>
                 <input 
                     type='number' 
-                    placeholder='Informe a capacidade do caminhão'
+                    placeholder='Valor Frete'
                     value={Frete}
                     onChange={(e) => setFrete(e.target.value)} 
                 />
