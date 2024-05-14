@@ -67,25 +67,9 @@ function Simulacao() {
 
                 if(lucroEmCima < parseInt(maximoLucroUni)){
                     combsUnicas.push(comb)
-                }else{
-
-                    qtde = parseInt(qtde/2);
-                    
-                    let comb = {
-                        nome: produto.nome,
-                        qtde: qtde,
-                        peso: parseInt((qtde * parseFloat(produto.peso)).toFixed(2)),
-                        peso_unitario: produto.peso,
-                        volume_unitario: parseFloat(produto.volume.toFixed(2)),
-                        volume: parseFloat((produto.volume * qtde).toFixed(4)),
-                        custoUnitario: produto.custo,
-                        vendaUnitario: parseFloat(((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo) + produto.custo).toFixed(2)),
-                        lucroUnitario: parseFloat((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo).toFixed(2)),
-                        lucroTotal: parseFloat(((lucroDesejado / ((produto.custo * qtde) + parseInt(Frete)) * produto.custo) * qtde).toFixed(2)),
-                    };
-                    combsUnicas.push(comb)
-                    
                 }
+
+                    
             }else{
                 console.log(produto, qtde)
 
