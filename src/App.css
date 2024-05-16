@@ -751,4 +751,18 @@ body{
   justify-content: start;
   flex-direction: column;
 }
+
+.ver-valores-btn{
+  font-size: 22px !important;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.ocultar {
+  display: none !IMPORTANT;
+}
+
+.last-simulationbtn{
+  margin-top: 50px;
+}
 /* FIM RESPOSTA SIMULACAO CONFIGURAÇÃO */

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app'; 
 import firebaseConfig from './Components/firebaseConfig'; 
 import RespostaSimulacao from './Components/RespostaSimulacao';
@@ -34,7 +34,28 @@ function Simulacao() {
         fetchProdutos();
     }, []); 
 
-    const handleGerarPossibilidades = () => {
+    const handleGerarUltimaSimulacao = async () => {
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const ultimaSimulacaoRef = doc(db, 'simulacao', 'ultima');
+            const ultimaSimulacaoDoc = await getDoc(ultimaSimulacaoRef);
+            if (ultimaSimulacaoDoc.exists()) {
+                const ultimaSimulacaoData = ultimaSimulacaoDoc.data();
+                setLucroDesejado(ultimaSimulacaoData.lucroDesejado);
+                setCapacidade(ultimaSimulacaoData.capacidade);
+                setVolumeCaminhao(ultimaSimulacaoData.VolumeCaminhao);
+                setFrete(ultimaSimulacaoData.Frete);
+
+            } else {
+                console.log('No such document!');
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o documento ultima:', error);
+        }
+    };
+
+    const handleGerarPossibilidades = async () => {
         const info_products = produtos.map(p => ({
             custo: parseFloat(p.PRECO_FINAL),
             nome: p.Nome,
@@ -71,16 +92,12 @@ function Simulacao() {
 
                     
             }else{
-                console.log(produto, qtde)
 
                 while((qtde * produto.peso) > (parseInt(VolumeCaminhao) * parseInt(capacidade))){
                     qtde--;
                 }
 
-                console.log(produto, qtde)
 
-
-                // console.log(qtde)
                 let comb = {
                     nome: produto.nome,
                     qtde: qtde,
@@ -122,6 +139,24 @@ function Simulacao() {
         }
 
         setCombinations(array);
+
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const simulacaoDocRef = doc(collection(db, 'simulacao'), 'ultima');
+            await setDoc(simulacaoDocRef, {
+                lucroDesejado,
+                capacidade,
+                VolumeCaminhao,
+                Frete
+            });
+            console.log('Dados da simulação salvos com sucesso!');
+        } catch (error) {
+            console.error('Erro ao salvar os dados da simulação:', error);
+        }
+        setLucroDesejado('');
+        setFrete('');
     };
 
     function encherCaminhao(objects, i){
@@ -224,7 +259,10 @@ function Simulacao() {
     
     return (
         <div className='Simulacao'>
+
             <h1 className='custom-cursor Simulacao-title'>Simulação De Lucro</h1>
+            <button className='last-simulationbtn' onClick={handleGerarUltimaSimulacao}>Carregar Última Simulação</button>
+
             <div className='PriceWannaWin'>
                 <h2>Quanto de lucro deseja ganhar?</h2>
                 <input 
@@ -247,10 +285,10 @@ function Simulacao() {
                     value={VolumeCaminhao}
                     onChange={(e) => setVolumeCaminhao(e.target.value)} 
                 />
-                <h3>Frete</h3>
+                <h3>Frete + Custo Operacional</h3>
                 <input 
                     type='number' 
-                    placeholder='Valor Frete'
+                    placeholder='Valor Frete + Custo Operacional'
                     value={Frete}
                     onChange={(e) => setFrete(e.target.value)} 
                 />
